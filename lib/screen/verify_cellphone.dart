@@ -5,6 +5,7 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CellVerification extends StatefulWidget {
   // const CellVerification({super.key});
@@ -52,6 +53,14 @@ class _CellVerificationState extends State<CellVerification> {
     print(cellNumber);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      final token = data['data']['token'];
+      final id = data['data']['user']['id'];
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
+      prefs.setInt('id', id);
+
+      print('your data is $data');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

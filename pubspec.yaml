@@ -39,6 +39,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.1
   get_ip_address: ^0.0.6
   fk_user_agent: ^2.1.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
