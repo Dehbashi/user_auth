@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import './logout_page.dart';
 // import 'package:check_vpn_connection/check_vpn_connection.dart';
 
 class AdminPage extends StatefulWidget {
@@ -120,6 +121,20 @@ class _AdminPageState extends State<AdminPage> {
     }
   }
 
+  Future<void> _clearSharedPreferences() async {
+    await clearSharedPreferences(
+        context); // Call the method from admin_utils.dart
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    bool confirmed = await showConfirmationDialog(
+        context); // Call the method from admin_utils.dart
+
+    if (confirmed == true) {
+      _clearSharedPreferences();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -137,49 +152,27 @@ class _AdminPageState extends State<AdminPage> {
               child: Container(
                 margin: EdgeInsets.all(15),
                 padding: EdgeInsets.all(15),
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.amber[600],
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'ارسلان دهباشی $_cellNumber',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      tooltip: 'خروج',
-                      icon: Icon(
-                        Icons.logout_rounded,
-                        size: 30,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.all(40),
-                width: 200,
-                height: 35,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.red,
-                ),
                 child: Text(
-                  'خروج از سامانه',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  'ارسلان دهباشی $_cellNumber',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                _showConfirmationDialog();
+              },
+              child: Text('خروج از سامانه'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                fixedSize: Size(170, 50),
+              ),
+            )
           ],
         ),
       ),

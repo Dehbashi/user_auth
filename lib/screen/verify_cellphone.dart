@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app3/screen/admin_page.dart';
 import 'package:login_app3/screen/enter_cellphone.dart';
 import './widget/buttonWidget.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -63,6 +64,12 @@ class _CellVerificationState extends State<CellVerification> {
       prefs.setString('userAgent', userAgent);
 
       print('your data is $data');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminPage(),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
