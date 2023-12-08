@@ -32,16 +32,17 @@ class TextFieldWidget extends StatelessWidget {
         validator: validator,
         onSaved: onSaved,
         style: TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'iranSans,'),
         textAlign: TextAlign.left,
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
-            color: Colors.lightBlue,
+            color: Color(0xFF037E85),
+            fontFamily: 'iranSans',
           ),
           filled: true,
           enabledBorder: OutlineInputBorder(
@@ -56,8 +57,8 @@ class TextFieldWidget extends StatelessWidget {
           ),
           prefixIcon: Icon(
             icon,
-            color: Colors.lightBlue,
-            size: 16,
+            color: Color(0xFF037E85),
+            size: 25,
           ),
           suffixIcon: Icon(
             suffixIcon,

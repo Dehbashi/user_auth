@@ -10,6 +10,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import './logout_page.dart';
+import 'package:persian/persian.dart';
+import './header.dart';
 // import 'package:check_vpn_connection/check_vpn_connection.dart';
 
 class AdminPage extends StatefulWidget {
@@ -137,43 +139,59 @@ class _AdminPageState extends State<AdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'صفحه مدیریت سرویسکار',
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+      ),
+      home: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Header(),
         ),
-        body: Column(
-          children: [
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                margin: EdgeInsets.all(15),
-                padding: EdgeInsets.all(15),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.amber[600],
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(15),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF9BDCE0),
+                  ),
+                  child: Text(
+                    '${_cellNumber.withPersianNumbers()}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'iranSans',
+                    ),
+                  ),
                 ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _showConfirmationDialog();
+                },
                 child: Text(
-                  'ارسلان دهباشی $_cellNumber',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'خروج از سامانه',
+                  style: TextStyle(
+                    fontFamily: 'iranSans',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showConfirmationDialog();
-              },
-              child: Text('خروج از سامانه'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                fixedSize: Size(170, 50),
-              ),
-            )
-          ],
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  fixedSize: Size(170, 50),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

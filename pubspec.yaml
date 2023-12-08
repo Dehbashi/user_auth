@@ -46,6 +46,7 @@ dependencies:
   latlng: ^1.0.0
   flutter_map_location_marker: ^8.0.2
   check_vpn_connection: ^0.0.2
+  persian: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  assets:
+    - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: iranSans
+      fonts:
+        - asset: assets/fonts/iransans/IRANSansX-Bold.ttf
+        - asset: assets/fonts/iransans/IRANSansX-Regular.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

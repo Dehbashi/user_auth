@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './header.dart';
 import 'package:login_app3/screen/verify_cellphone.dart';
 import 'package:login_app3/screen/widget/textFieldWidget.dart';
 import 'widget/buttonWidget.dart';
@@ -112,106 +113,119 @@ class _CellEnterState extends State<CellEnter> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // UserAgent(),
-            Container(
-              alignment: Alignment.center,
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.lightBlue,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Text(
-                'ورود به سامانه',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 200,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: Container(
-                        child: TextFieldWidget(
-                          keyboardType: TextInputType.number,
-                          onSaved: (value) {
-                            cellNumber =
-                                value ?? ''; // Save the cellNumber value
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'لطفاً شماره تلفن خود را وارد نمایید';
-                            } else if (!value.startsWith('09')) {
-                              return 'شماره تلفن باید با 09 آغاز شود';
-                            } else if (value.length != 11) {
-                              return 'شماره تلفن باید 11 رقمی باشد';
-                            }
-                            return null;
-                          },
-                          icon: Icons.phone,
-                          labelText: 'شماره تلفن',
-                          obscureText: false,
-                          suffixIcon: null,
-                        ),
-                      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+      ),
+      home: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Header(),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // UserAgent(),
+                Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF9BDCE0),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 15),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            sendPhoneNumber(
-                              mainIpAddress,
-                              cellNumber,
-                              _platformVersion,
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CellVerification(
-                                  ip: mainIpAddress,
-                                  cellNumber: cellNumber,
-                                  userAgent: _platformVersion,
-                                ),
-                              ),
-                            );
-                          }
-                          print('Your phone number is: $cellNumber');
-                          print('Your IP Address is: $mainIpAddress');
-                          print('Your User Agent is: $_platformVersion');
-                        },
-                        child: ButtonWidget(
-                          title: 'ورود',
-                          hasBorder: false,
-                        ),
-                      ),
+                  ),
+                  child: Text(
+                    'ورود به سامانه موقعیت یاب',
+                    style: TextStyle(
+                      fontFamily: 'iranSans',
+                      color: Color(0xFF037E85),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: 100,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Directionality(
+                          textDirection: TextDirection.rtl,
+                          child: Container(
+                            child: TextFieldWidget(
+                              keyboardType: TextInputType.number,
+                              onSaved: (value) {
+                                cellNumber =
+                                    value ?? ''; // Save the cellNumber value
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'لطفاً شماره تلفن خود را وارد نمایید';
+                                } else if (!value.startsWith('09')) {
+                                  return 'شماره تلفن باید با 09 آغاز شود';
+                                } else if (value.length != 11) {
+                                  return 'شماره تلفن باید 11 رقمی باشد';
+                                }
+                                return null;
+                              },
+                              icon: Icons.phone,
+                              labelText: 'شماره تلفن',
+                              obscureText: false,
+                              suffixIcon: null,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                sendPhoneNumber(
+                                  mainIpAddress,
+                                  cellNumber,
+                                  _platformVersion,
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CellVerification(
+                                      ip: mainIpAddress,
+                                      cellNumber: cellNumber,
+                                      userAgent: _platformVersion,
+                                    ),
+                                  ),
+                                );
+                              }
+                              print('Your phone number is: $cellNumber');
+                              print('Your IP Address is: $mainIpAddress');
+                              print('Your User Agent is: $_platformVersion');
+                            },
+                            child: ButtonWidget(
+                              title: 'ورود',
+                              hasBorder: false,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

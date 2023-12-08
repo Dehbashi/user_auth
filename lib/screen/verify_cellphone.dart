@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_app3/screen/admin_page.dart';
 import 'package:login_app3/screen/enter_cellphone.dart';
+import './header.dart';
 import './widget/buttonWidget.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:http/http.dart' as http;
@@ -82,102 +83,112 @@ class _CellVerificationState extends State<CellVerification> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(bottom: 10),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 200,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+      ),
+      home: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Header(),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'کد تأیید',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  padding: EdgeInsets.only(right: 40, left: 30),
-                  alignment: Alignment.topRight,
                   child: Text(
-                    'کد تأیید برای شما ارسال شد. لطفاً آن را در کادر زیر وارد نمایید.',
+                    'کد تأیید',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              Container(
-                child: OtpTextField(
-                  numberOfFields: 5,
-                  borderColor: Color(0xFF512DA8),
-                  //set to true to show as box or false to show as dash
-                  showFieldAsBox: true,
-                  //runs when a code is typed in
-                  onCodeChanged: (String code) {
-                    //handle validation or checks here
-                  },
-                  //runs when every textfield is filled
-                  onSubmit: (String verificationCode) {
-                    otpCode = verificationCode;
-                  }, // end onSubmit
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                margin: EdgeInsets.only(top: 15),
-                child: GestureDetector(
-                  onTap: () {
-                    print('Verification code is: $otpCode');
-                    verifyOtpCode(ip, cellNumber, userAgent, otpCode);
-                  },
-                  child: ButtonWidget(
-                    title: 'تأیید کد',
-                    hasBorder: false,
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 40, left: 30),
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'کد تأیید برای شما ارسال شد. لطفاً آن را در کادر زیر وارد نمایید.',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 0,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                margin: EdgeInsets.only(top: 15),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: ButtonWidget(
-                    title: 'بازگشت',
-                    hasBorder: false,
+                SizedBox(
+                  height: 100,
+                ),
+                Container(
+                  child: OtpTextField(
+                    numberOfFields: 5,
+                    borderColor: Color(0xFF512DA8),
+                    //set to true to show as box or false to show as dash
+                    showFieldAsBox: true,
+                    //runs when a code is typed in
+                    onCodeChanged: (String code) {
+                      //handle validation or checks here
+                    },
+                    //runs when every textfield is filled
+                    onSubmit: (String verificationCode) {
+                      otpCode = verificationCode;
+                    }, // end onSubmit
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  margin: EdgeInsets.only(top: 15),
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Verification code is: $otpCode');
+                      verifyOtpCode(ip, cellNumber, userAgent, otpCode);
+                    },
+                    child: ButtonWidget(
+                      title: 'تأیید کد',
+                      hasBorder: false,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 0,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  margin: EdgeInsets.only(top: 15),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: ButtonWidget(
+                      title: 'بازگشت',
+                      hasBorder: false,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
