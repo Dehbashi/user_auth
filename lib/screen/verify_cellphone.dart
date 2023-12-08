@@ -59,6 +59,8 @@ class _CellVerificationState extends State<CellVerification> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', token);
       prefs.setInt('id', id);
+      prefs.setString('cellNumber', cellNumber);
+      prefs.setString('userAgent', userAgent);
 
       print('your data is $data');
     } else {

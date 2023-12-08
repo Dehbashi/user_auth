@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'enter_cellphone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import './admin_page.dart';
+import 'location_service.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,7 +11,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // const HomeScreen({super.key});
+
   bool isFirstTimeUser = false;
+
   @override
   void initState() {
     checkFirstTimeUser();
@@ -19,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void checkFirstTimeUser() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
-    final id = prefs.getString('id');
+    final id = prefs.getInt('id');
     setState(() {
       isFirstTimeUser = token == null || id == null;
     });
@@ -28,11 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isFirstTimeUser
-          ? CellEnter()
-          : Center(
-              child: Text("You've already verified the OTP code"),
-            ),
+      body: isFirstTimeUser ? CellEnter() : AdminPage(),
+      // body: Center(child: Text('Your number $_cellNumber')),
     );
   }
 }
