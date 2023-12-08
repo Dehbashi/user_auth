@@ -21,13 +21,15 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   @override
   late String _cellNumber;
-  late bool _checkVpn;
+  late String _userAgent;
+  late String _ip;
+  // late bool _checkVpn;
   late Timer _timer;
-  late dynamic _lat;
-  late dynamic _long;
+  late String? _lat;
+  late String? _long;
 
   void initState() {
-    _getCellNumber();
+    _getDeviceInformation();
     _startTimer();
     super.initState();
   }
@@ -39,15 +41,17 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 5), (_) {
+    _timer = Timer.periodic(Duration(seconds: 30), (_) {
       _getCurrentPosition();
     });
   }
 
-  void _getCellNumber() async {
+  void _getDeviceInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _cellNumber = prefs.getString('cellNumber') ?? '';
+      _userAgent = prefs.getString('userAgent') ?? '';
+      _ip = prefs.getString('ip') ?? '';
     });
   }
 
@@ -59,10 +63,12 @@ class _AdminPageState extends State<AdminPage> {
       prefs.setString('long', position.longitude.toString());
 
       setState(() {
-        _lat = prefs.get('lat');
-        _long = prefs.get('long');
-        sendInformationtToNeshan(_lat, _long);
+        _lat = prefs.getString('lat');
+        _long = prefs.getString('long');
+        // sendInformationtToNeshan(35.7016401, 51.3931059);
       });
+
+      sendInformationtToNeshan();
 
       print('$_lat and $_long');
     } catch (e) {
@@ -70,11 +76,11 @@ class _AdminPageState extends State<AdminPage> {
     }
   }
 
-  Future<void> sendInformationtToNeshan(_lat, _long) async {
+  Future<void> sendInformationtToNeshan() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final _ip = prefs.get('ip');
-    final _userAgent = prefs.get('userAgent');
-    final _token = prefs.get('token');
+    final _ip = prefs.getString('ip');
+    final _userAgent = prefs.getString('userAgent');
+    final _token = prefs.getString('token');
     final url = Uri.parse(
       'https://api.neshan.org/v5/reverse?lat=$_lat&lng=$_long',
     );
@@ -91,10 +97,12 @@ class _AdminPageState extends State<AdminPage> {
       'token': _token,
     };
 
-    final response = await http.post(
+    print(body);
+
+    final response = await http.get(
       url,
       headers: headers,
-      body: body,
+      // body: body,
     );
     print(response.body);
     if (response.statusCode == 200) {
@@ -106,8 +114,7 @@ class _AdminPageState extends State<AdminPage> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text('Failed to send phone number with ${response.statusCode}'),
+          content: Text('Failed to get data with code ${response.statusCode}'),
         ),
       );
     }
@@ -118,44 +125,64 @@ class _AdminPageState extends State<AdminPage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'صفحه مدیریت سرویسکار',
-            ),
+        appBar: AppBar(
+          title: Text(
+            'صفحه مدیریت سرویسکار',
           ),
-          body: ListView(
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.amber[600],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'ارسلان دهباشی $_cellNumber',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        body: Column(
+          children: [
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                margin: EdgeInsets.all(15),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.amber[600],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'ارسلان دهباشی $_cellNumber',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      tooltip: 'خروج',
+                      icon: Icon(
+                        Icons.logout_rounded,
+                        size: 30,
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        tooltip: 'خروج',
-                        icon: Icon(
-                          Icons.logout_rounded,
-                          size: 30,
-                        ),
-                      ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                margin: EdgeInsets.all(40),
+                width: 200,
+                height: 35,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.red,
+                ),
+                child: Text(
+                  'خروج از سامانه',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:get_ip_address/get_ip_address.dart';
 // import './widget/get_user_agent.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CellEnter extends StatefulWidget {
   const CellEnter({super.key});
@@ -37,6 +38,10 @@ class _CellEnterState extends State<CellEnter> {
     String platformVersion;
     try {
       platformVersion = FkUserAgent.userAgent!;
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userAgent', platformVersion);
+
       print(platformVersion);
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
@@ -56,6 +61,8 @@ class _CellEnterState extends State<CellEnter> {
       dynamic data = await ipAddress.getIpAddress();
       String ipAddressString = data['ip'];
       mainIpAddress = ipAddressString;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('ip', mainIpAddress);
     } on IpAddressException catch (exception) {
       print(exception.message);
     }

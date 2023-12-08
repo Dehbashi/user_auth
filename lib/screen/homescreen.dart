@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: isFirstTimeUser ? CellEnter() : AdminPage(),
-      // body: Center(child: Text('Your number $_cellNumber')),
+      // body: CellEnter(),
     );
   }
 }
