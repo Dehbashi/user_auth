@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import './logout_page.dart';
 import 'package:persian/persian.dart';
 import './header.dart';
-// import 'package:check_vpn_connection/check_vpn_connection.dart';
+import '../constants.dart';
 
 class AdminPage extends StatefulWidget {
   // const AdminPage({super.key});
@@ -23,6 +23,7 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   @override
+  String text = "Stop Service";
   late String _cellNumber;
   late String _userAgent;
   late String _ip;
@@ -168,7 +169,7 @@ class _AdminPageState extends State<AdminPage> {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'iranSans',
+                      fontFamily: Constants.textFont,
                     ),
                   ),
                 ),
@@ -180,7 +181,7 @@ class _AdminPageState extends State<AdminPage> {
                 child: Text(
                   'خروج از سامانه',
                   style: TextStyle(
-                    fontFamily: 'iranSans',
+                    fontFamily: Constants.textFont,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -189,7 +190,7 @@ class _AdminPageState extends State<AdminPage> {
                   backgroundColor: Colors.red,
                   fixedSize: Size(170, 50),
                 ),
-              )
+              ),
             ],
           ),
         ),
