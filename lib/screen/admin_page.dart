@@ -137,7 +137,7 @@ class _AdminPageState extends State<AdminPage> {
         // sendInformationtToNeshan(35.7016401, 51.3931059);
       });
 
-      sendInformationtToNeshan();
+      sendInformationToNeshan();
 
       print('$_lat and $_long');
     } catch (e) {
@@ -145,7 +145,7 @@ class _AdminPageState extends State<AdminPage> {
     }
   }
 
-  Future<void> sendInformationtToNeshan() async {
+  Future<void> sendInformationToNeshan() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final _ip = prefs.getString('ip');
     final _userAgent = prefs.getString('userAgent');
@@ -245,6 +245,7 @@ class _AdminPageState extends State<AdminPage> {
                         onPressed: () {
                           _showConfirmationDialog();
                         },
+                        tooltip: 'خروج از سامانه',
                       ),
                     ],
                   ),
@@ -294,6 +295,9 @@ class _AdminPageState extends State<AdminPage> {
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  topLeft: Radius.circular(10)),
                             ),
                             child: ListTile(
                               title: Text(

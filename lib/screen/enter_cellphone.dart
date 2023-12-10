@@ -10,6 +10,7 @@ import 'package:get_ip_address/get_ip_address.dart';
 import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../constants.dart';
 
 class CellEnter extends StatefulWidget {
   const CellEnter({super.key});
