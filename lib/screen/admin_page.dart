@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:login_app3/main.dart';
 import 'package:login_app3/screen/enter_cellphone.dart';
 import 'package:login_app3/screen/homescreen.dart';
+import 'package:login_app3/screen/services/send_location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 import './location_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'location_service.dart';
@@ -110,7 +113,7 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 30), (_) {
+    _timer = Timer.periodic(Duration(seconds: 5), (_) {
       _getCurrentPosition();
     });
   }
@@ -134,15 +137,50 @@ class _AdminPageState extends State<AdminPage> {
       setState(() {
         _lat = prefs.getString('lat');
         _long = prefs.getString('long');
-        // sendInformationtToNeshan(35.7016401, 51.3931059);
       });
 
       sendInformationToNeshan();
+      sendToLian();
 
       print('$_lat and $_long');
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Future<void> sendToLian() async {
+    final url = Uri.parse(
+        'https://s1.lianerp.com/api/public/user/provider-log-location');
+
+    final headers = {
+      'TokenPublic': 'bpbm',
+      'Content-Type': 'application/json',
+    };
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final _ip = prefs.getString('ip');
+    // final _userAgent = prefs.getString('userAgent');
+    final _token = prefs.getString('token');
+    // final _lat = prefs.getString('lat');
+    // final _long = prefs.getString('long');
+    // final _cellNumber = prefs.getString('cellNumber');
+
+    final body = jsonEncode({
+      'ip': _ip,
+      'phone_number': _cellNumber,
+      'userAgent': _userAgent,
+      'lat': _lat,
+      'long': _long,
+      'token': _token,
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+    print('Your Lian response is ${response.body}');
+    print(body);
+    print('cellNumber');
+    // if (response.statusCode == 200) {
+    print('Your response code is ${response.statusCode}');
+    // }
   }
 
   Future<void> sendInformationToNeshan() async {
@@ -314,6 +352,21 @@ class _AdminPageState extends State<AdminPage> {
                       ),
                     );
                   },
+                ),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    var uniqueId = DateTime.now().second.toString();
+                    await Workmanager().registerOneOffTask(
+                      uniqueId,
+                      task,
+                      initialDelay: Duration(seconds: 10),
+                      constraints:
+                          Constraints(networkType: NetworkType.connected),
+                    );
+                  },
+                  child: Text('شروع'),
                 ),
               ),
             ],
